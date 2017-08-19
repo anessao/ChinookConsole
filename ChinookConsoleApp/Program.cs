@@ -20,6 +20,7 @@ namespace ChinookConsoleApp
                 Console.WriteLine("1. List Employees");
                 Console.WriteLine("2. Add an Employee");
                 Console.WriteLine("3. Update Employee's Last Name");
+                Console.WriteLine("4. Delete an Employee");
                 Console.WriteLine("9. Exit");
                 Console.WriteLine("");
                 Console.Write(">");
@@ -29,6 +30,7 @@ namespace ChinookConsoleApp
                 if (selection == "1") new ListEmployees().List();
                 if (selection == "2") new AddEmployee().Add();
                 if (selection == "3") new UpdateEmployee().Update();
+                if (selection == "4") new DeleteEmployee().DeleteSelection();
                 if (selection == "9") break;
 
             }
