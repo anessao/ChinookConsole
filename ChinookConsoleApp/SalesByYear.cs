@@ -32,12 +32,18 @@ namespace ChinookConsoleApp
                                                                       "Join Customer as c on i.InvoiceId = c.CustomerId " +
                                                                       "Join Employee as e on c.SupportRepId = e.EmployeeId " +
                                                                       "Where year(i.InvoiceDate) = @ChosenYear " +
-                                                                      "Group By e.FirstName, e.LastName, year(i.InvoiceDate), e.EmployeeId"
+                                                                      "Group By e.FirstName, e.LastName, year(i.InvoiceDate), e.EmployeeId",
                                                                       new {ChosenYear = year });
-                    Console.WriteLine("Waaa?");
                     foreach (var employee in result)
                     {
-                        Console.WriteLine($"{employee.Id}.) {employee.FullName}: {employee.SalesTotal}");
+                        if (employee != null)
+                        {
+                            Console.WriteLine($"{employee.Id}.) {employee.FullName}: {employee.SalesTotal}");
+                        }
+                        else if (employee == null)
+                        {
+                            Console.WriteLine("There are no employee sales for this year");
+                        }
                     }
                     Console.ReadLine();
                     
