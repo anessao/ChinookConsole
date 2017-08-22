@@ -22,7 +22,7 @@ namespace ChinookConsoleApp
                 {
                     var rowsAffected = connection.Execute("Delete From Employee " +
                                                           "Where EmployeeId = @EmployeeId",
-                        new { EmployeeId = firedEmployee });
+                                                            new { EmployeeId = firedEmployee });
 
                     Console.WriteLine(rowsAffected != 1 ? "Add Failed" : "Success!");
 

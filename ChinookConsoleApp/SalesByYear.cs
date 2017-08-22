@@ -27,24 +27,26 @@ namespace ChinookConsoleApp
                 {
                     connection.Open();
 
-                    var result = connection.Query<SalesResultsList>("Select year(i.InvoiceDate) as yeartime, e.FirstName, e.LastName, Sum(Total) " +
+                    var result = connection.Query<SalesResultsList>("Select e.EmployeeId as Id, year(i.InvoiceDate), e.FirstName + e.LastName as FullName, Sum(Total) as SalesTotal " +
                                                                       "From Invoice as i " +
                                                                       "Join Customer as c on i.InvoiceId = c.CustomerId " +
                                                                       "Join Employee as e on c.SupportRepId = e.EmployeeId " +
                                                                       "Where year(i.InvoiceDate) = @ChosenYear " +
-                                                                      "Group By e.FirstName, e.LastName, year(i.InvoiceDate)"
-                                                                      );
-
+                                                                      "Group By e.FirstName, e.LastName, year(i.InvoiceDate), e.EmployeeId"
+                                                                      new {ChosenYear = year });
+                    Console.WriteLine("Waaa?");
                     foreach (var employee in result)
                     {
                         Console.WriteLine($"{employee.Id}.) {employee.FullName}: {employee.SalesTotal}");
                     }
                     Console.ReadLine();
+                    
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
+                    Console.ReadLine();
                 }
             }
         }
