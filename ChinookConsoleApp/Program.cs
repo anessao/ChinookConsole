@@ -21,16 +21,18 @@ namespace ChinookConsoleApp
                 Console.WriteLine("2. Add an Employee");
                 Console.WriteLine("3. Update Employee's Last Name");
                 Console.WriteLine("4. Delete an Employee");
+                Console.WriteLine("5. Show Employee Progress");
                 Console.WriteLine("9. Exit");
                 Console.WriteLine("");
                 Console.Write(">");
                 var selection = Console.ReadLine();
 
 
-                if (selection == "1") new ListEmployees().List();
+                if (selection == "1") new ListEmployees().List("Press enter to return to the menu");
                 if (selection == "2") new AddEmployee().Add();
                 if (selection == "3") new UpdateEmployee().Update();
-                if (selection == "4") new DeleteEmployee().DeleteSelection();
+                if (selection == "4") new DeleteEmployee().Delete();
+                if (selection == "5") new SalesByYear().ShowSales();
                 if (selection == "9") break;
 
             }

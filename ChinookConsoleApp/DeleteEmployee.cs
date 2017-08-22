@@ -1,57 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dapper;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChinookConsoleApp
 {
-    class DeleteEmployee
+    public class DeleteEmployee
     {
-
-        public void DeleteSelection()
+        public void Delete()
         {
-            new ListEmployees().List();
-            Console.WriteLine("********************************");
-            Console.WriteLine("Choose an employee by number:");
-            var employeeId = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Are you sure you want to delete? y or n");
-            var verifiedDelete = Console.ReadLine();
+            var employeeList = new ListEmployees();
+            var firedEmployee = employeeList.List("Pick an employee to transition:");
+        
 
-            if (verifiedDelete == "y")
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Chinook"].ConnectionString))
             {
-                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Chinook"].ConnectionString))
+                connection.Open();
+
+                try
                 {
-                    var employeeDelete = connection.CreateCommand();
-                    employeeDelete.CommandText = "DELETE FROM Employee" +
-                                              " Where EmployeeId = @employeeId";
+                    var rowsAffected = connection.Execute("Delete From Employee " +
+                                                          "Where EmployeeId = @EmployeeId",
+                        new { EmployeeId = firedEmployee });
 
-                    var employeeIdParameter = employeeDelete.Parameters.Add("@employeeId", SqlDbType.Int);
-                    employeeIdParameter.Value = employeeId;
+                    Console.WriteLine(rowsAffected != 1 ? "Add Failed" : "Success!");
 
-                    try
-                    {
-                        connection.Open();
-                        var rowsAffected = employeeDelete.ExecuteNonQuery();
-                        Console.WriteLine(rowsAffected != 1 ? "Add Failed" : "Success!");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine(ex.StackTrace);
-                    }
-                    Console.WriteLine("Press enter to return to the menu.");
+                    Console.WriteLine("Press enter to return to the menu");
                     Console.ReadLine();
                 }
-            }
-            else
-            {
-                Console.Clear();
-                Console.WriteLine("Press enter to return to the menu.");
-                Console.ReadLine();
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
     }
